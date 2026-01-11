@@ -1,7 +1,20 @@
 import OpenAi from 'openai'
 
+const corsHeaders = {
+	'Access-Control-Allow-Origin': '*',
+	'Access-Control-Allow-Headers': 'Content-Type',
+	'Access-Control-Allow-Methods': 'POST, OPTIONS'
+
+}
+
 export default {
 	async fetch(request, env, ctx) {
+
+		// Handle CORS preflight requests
+		if(request.method === "OPTIONS") {
+			return new Response(null, { headers, corsHeaders })
+		}
+		
 		const openaiClient = new OpenAi({
 			apiKey: env.OPENAI_API_KEY
 		})
@@ -27,9 +40,9 @@ export default {
 
 			const response = chatCompletion.choices[0].message
 
-			return new Response(JSON.stringify(response))
+			return new Response(JSON.stringify(response), { headers: corsHeaders })
 		} catch(err) {
-			return new Response(err)
+			return new Response(err, { headers: corsHeaders })
 		}
 	},
 };
