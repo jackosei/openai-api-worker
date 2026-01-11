@@ -11,13 +11,18 @@ export default {
 				model: 'gpt-4.1-nano',
 				messages: [
 					{
+						role: 'system',
+						content: 'Limit all your response to 100 words maximum.'
+					},
+					{
 						role: 'user',
 						content: 'Should I trust stock predictions from Dodgy Dave?'
 					}
 				],
 				temperature: 1.1,
 				presence_penalty: 0,
-				frequency_penalty: 0
+				frequency_penalty: 0,
+				max_tokens: 100
 			})
 
 			const response = chatCompletion.choices[0].message
